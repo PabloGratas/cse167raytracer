@@ -1,0 +1,4 @@
+﻿  main.cpp
+C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\raytracer\main.cpp(16,30): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\raytracer\main.cpp(17,29): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+  raytracer.vcxproj -> C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\raytracer\Debug\raytracer.exe
