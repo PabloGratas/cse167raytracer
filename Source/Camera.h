@@ -1,6 +1,7 @@
 #include "glm-0.9.7.1/glm/vec3.hpp"
 #include "Ray.h"
 #include "Scene.h"
+#include "Intersection.h"
 
 typedef glm::vec3 vec3 ; 
 

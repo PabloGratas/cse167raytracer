@@ -1,8 +1,11 @@
+#include "FreeImage.h"
+#include <vector>
+using namespace std;
 class Image {
     
-    int width;
-    int height;
-    Color pixels[width][height]; //We need to figure out how to do this
+    const int width ;
+    const int height;
+    vector<RGBQUAD> pixels;
 
     public:
         Image (int width, int height);
