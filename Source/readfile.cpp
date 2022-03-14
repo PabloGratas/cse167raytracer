@@ -35,8 +35,8 @@ bool readvals(stringstream &s, const int numvals, float* values)
   return true; 
 }
 
-Scene readfile(const char* filename) {
-    Camera sceneCam;
+vector<Camera> readfile(const char* filename, Scene theScene) {
+    vector<Camera> sceneCams;
     string str, cmd;
     ifstream in;
     Scene theScene;
