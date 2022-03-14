@@ -9,15 +9,10 @@ class Camera {
     
     public:
         Camera();
+        ~Camera();
         Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene scene);
         //method to generate rays to each pixel 
-        void setEye(vec3 eyeInput) {lookFrom = eyeInput;};
-        void setlookAt(vec3 lookAtInput) {lookAt = lookAtInput;};
-        void setUp(vec3 upInput) {up = upInput;};
-        void setfov(float fovInput) {fovy = fovInput;};
         Ray RayThruPixel(int pixelX, int pixY, Scene scene);
-
-    private:
         vec3 lookFrom;
         vec3 lookAt;
         vec3 up;

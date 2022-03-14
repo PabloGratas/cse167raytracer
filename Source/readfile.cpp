@@ -35,11 +35,15 @@ bool readvals(stringstream &s, const int numvals, float* values)
   return true; 
 }
 
-vector<Camera> readfile(const char* filename, Scene theScene) {
+vector<Camera> readfile(const char* filename, Scene& theScene) {
     vector<Camera> sceneCams;
+    vector<glm::vec3> eyes;
+    vector<glm::vec3> centers;
+    vector<glm::vec3> ups;
+    vector<float> fovys;
+    int camcount;
     string str, cmd;
     ifstream in;
-    Scene theScene;
     vector<vec3> vertVec;
     in.open(filename);
     if (in.is_open()) {
@@ -74,7 +78,7 @@ vector<Camera> readfile(const char* filename, Scene theScene) {
                 else if (cmd == "camera") {
                   validinput = readvals(s,10,values); // 10 values eye cen up fov
                     if (validinput) {
-                     
+                      camcount++;
                      /*ASSIGN to class objects later*/
                       glm::vec3 eye = glm::vec3(values[0], values[1], values[2]);
                       glm::vec3 center = glm::vec3(values[3], values[4], values[5]);
@@ -82,40 +86,43 @@ vector<Camera> readfile(const char* filename, Scene theScene) {
                       glm::vec3 up = glm::vec3(values[6], values[7], values[8]);
          
                       float fovy = (float)values[9];
-                      
-                      //upinit = Transform::upvector(upVector, eyeinit);
+
+                      eyes.push_back(eye);
+                      centers.push_back(center);
+                      ups.push_back(up);
+                      fovy.push_back(fovy);
                     }
                 }
                 else if (cmd == "ambient") {
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    theScene.ambient = vec3(values[0], values[1], values[2]);
+                    *theScene.ambient = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "directional"){
                   validinput = readvals(s,6,values);
                   if(validinput){
-                    theScene.directionala = vec3(values[0], values[1], values[2]);
-                    theScene.directionalb = vec3(values[0], values[1], values[2]);
+                    *theScene.directionala = vec3(values[0], values[1], values[2]);
+                    *theScene.directionalb = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "point"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    theScene.pointa = vec3(values[0], values[1], values[2]);
-                    theScene.pointb = vec3(values[0], values[1], values[2]);
+                    *theScene.pointa = vec3(values[0], values[1], values[2]);
+                    *theScene.pointb = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "diffuse"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    theScene.diffuse = vec3(values[0], values[1], values[2]);
+                    *theScene.diffuse = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "specular"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    theScene.specular = vec3(values[0], values[1], values[2]);
+                    *theScene.specular = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "maxverts"){
@@ -130,11 +137,21 @@ vector<Camera> readfile(const char* filename, Scene theScene) {
                 else if (cmd == "tri"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    theScene.triList.push_back(Triangle(vertvec[values[0]], vertVec[values[1]], vertVec[values[2]]));
+                    *theScene.triList.push_back(Triangle(vertvec[values[0]], vertVec[values[1]], vertVec[values[2]]));
+                  }
+                }
+                else if (cmd == "sphere"){
+                  validinput = readvals(s,4,values);
+                  if(validinput){
+                    *theScene.sphereList.push_back(Sphere(vec3(values[0], values[1], values[2]), values[3]));
                   }
                 }
             }
         }
 
     }
+  for(int i = 0; i < camcount; i++){
+    sceneCams.push_back(Camera(centers[i], eyes[i], ups[i], fovys[i], *theScene));
+  }
+  return sceneCams;
 }
