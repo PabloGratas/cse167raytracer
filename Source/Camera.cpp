@@ -89,7 +89,9 @@ Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
             retval.pos = P;
             retval.surNorm = normal;
             retval.dist = t;
+            return retval;
         }
+        else {return;}
 
     }
 }
