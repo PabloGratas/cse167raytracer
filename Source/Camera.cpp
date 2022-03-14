@@ -29,11 +29,30 @@ Ray Camera::RayThruPixel(int pixelX, int pixelY, Scene scene) {
 }
 
 Intersection sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and triangle objects
-    
+    Intersection retval = Intersection(vec3(), vec3(), INFINITY);
+    vec3 d = pixelRay.direction;
+    point p0 = pixelRay.origin;
+    point c = curObj.center;
+    float r = curObj.rad;
+    float innersqrt =  dot(d,(p0-c))*dot(d,(p0-c))-length(p0-c)*length(p0-c)+r*r;
+    float tplus = dot(-d,(p0 - c))+sqrt(innersqrt);
+    float tminus = dot(-d,(p0 - c))-sqrt(innersqrt);
+    if(innersqrt > 0){
+        if(tminus > 0){
+            retval.pos = p0 + tminus*d;
+            retval.surNorm = normalize(retval.pos-c);
+            retval.dist = tminus;
+        } else if (tplus > 0){
+            retval.pos = p0 + tplus*d;
+            retval.surNorm = normalize(retval.pos-c);
+            retval.dist = tplus;
+        }
+    } 
+    return retval;
 }
 Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
-    //Triangle hit logic
-    //if hit return correct Intersection else return intersection with dist set to infinity
+    Intersection retval = Intersection(vec3(), vec3(), INFINITY);
+    return retval;
 }
 
 Intersection Intersect(Ray pixelRay, Scene scene){

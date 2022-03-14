@@ -35,10 +35,12 @@ bool readvals(stringstream &s, const int numvals, float* values)
   return true; 
 }
 
-void readfile(const char* filename) {
+Scene readfile(const char* filename) {
     Camera sceneCam;
     string str, cmd;
     ifstream in;
+    Scene theScene;
+    vector<vec3> vertVec;
     in.open(filename);
     if (in.is_open()) {
         
@@ -84,7 +86,53 @@ void readfile(const char* filename) {
                       //upinit = Transform::upvector(upVector, eyeinit);
                     }
                 }
-
+                else if (cmd == "ambient") {
+                  validinput = readvals(s,3,values);
+                  if(validinput){
+                    theScene.ambient = vec3(values[0], values[1], values[2]);
+                  }
+                }
+                else if (cmd == "directional"){
+                  validinput = readvals(s,6,values);
+                  if(validinput){
+                    theScene.directionala = vec3(values[0], values[1], values[2]);
+                    theScene.directionalb = vec3(values[0], values[1], values[2]);
+                  }
+                }
+                else if (cmd == "point"){
+                  validinput = readvals(s,3,values);
+                  if(validinput){
+                    theScene.pointa = vec3(values[0], values[1], values[2]);
+                    theScene.pointb = vec3(values[0], values[1], values[2]);
+                  }
+                }
+                else if (cmd == "diffuse"){
+                  validinput = readvals(s,3,values);
+                  if(validinput){
+                    theScene.diffuse = vec3(values[0], values[1], values[2]);
+                  }
+                }
+                else if (cmd == "specular"){
+                  validinput = readvals(s,3,values);
+                  if(validinput){
+                    theScene.specular = vec3(values[0], values[1], values[2]);
+                  }
+                }
+                else if (cmd == "maxverts"){
+                  printf("lol"); //I don't think we need the maxverts for anything honestly
+                }
+                else if (cmd == "vertex"){
+                  validinput = readvals(s,3,values);
+                  if(validinput){
+                    vertVec.push_back(vec3(values[0], values[1], values[2]));
+                  }
+                }
+                else if (cmd == "tri"){
+                  validinput = readvals(s,3,values);
+                  if(validinput){
+                    theScene.triList.push_back(Triangle(vertvec[values[0]], vertVec[values[1]], vertVec[values[2]]));
+                  }
+                }
             }
         }
 

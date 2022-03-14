@@ -8,9 +8,8 @@ class Intersection { //See page 27 of the ray tracing slides
     public:
         point pos;
         vec3 surNorm;
-        vec3 incoming;
         float dist;
-        Intersection (point pos, vec3 surNorm, vec3 incoming, float dist);
+        Intersection (point pos, vec3 surNorm, float dist);
         Intersection();
         ~Intersection();
 
