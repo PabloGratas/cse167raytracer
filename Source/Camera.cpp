@@ -51,8 +51,47 @@ Intersection sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and 
     return retval;
 }
 Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
+    //not 100% sure about
     Intersection retval = Intersection(vec3(), vec3(), INFINITY);
-    return retval;
+    vec3 CminusA = curObj.c - curObj.a;
+    vec3 BminusA = curObj.b - curObj.a;
+    vec3 normal = glm::normalize(glm::cross(CminusA, BminusA));
+    float t = (glm::dot(A, normal) - glm::dot(pixelRay.origin, normal)) / glm::dot(ray.direction, normal);
+
+    //check if point is behind triangle
+    if (t < 0) {
+        return;
+    }
+    else {
+        vec3 P = pixelRay.origin + t * pixelRay.direction;
+        //check if Point is inside the triangle
+        
+        vec3 PminusA = P - A;
+        vec3 PminusB = P - B;
+        vec3 PminusC = P - C;
+        vec3 CminusB = curObj.c - curObj.b;
+        vec3 AminusC = curObj.a - curObj.c;
+
+        bool inTriangle = false;
+        if (glm::dot(glm::cross(BminusA, PminusA), normal) >= 0) {
+            if (glm::dot(glm::cross(CminusB, PminusB), normal) >= 0) {
+                if (glm::dot(glm::cross(BminusA, PminusA), normal) >= 0) {
+                    inTriangle = true;
+                }
+                else {return;} 
+            }
+            else {return;} 
+        }
+
+        else {return;} 
+
+        if (inTriangle == true) {
+            retval.pos = P;
+            retval.surNorm = normal;
+            retval.dist = t;
+        }
+
+    }
 }
 
 Intersection Intersect(Ray pixelRay, Scene scene){
