@@ -19,10 +19,10 @@ Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene) {
 
 Ray Camera::RayThruPixel(int pixelX, int pixelY) {
     //not sure about alpha and beta!!
-    int width = thisScene->width;
-    int height = thisScene->height;
+    float width = thisScene->width;
+    float height = thisScene->height;
     float alpha = 2.0*(pixelX+0.5)/width - 1;
-    float beta = 1-2.0*(pixelY+0.5)/width;
+    float beta = 1-2.0*(pixelY+0.5)/height;
     vec3 direction = normalize(alpha*u + beta*v - w);
     return Ray(lookFrom, direction);
 }
