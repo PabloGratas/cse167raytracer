@@ -29,7 +29,7 @@ Ray Camera::RayThruPixel(int pixelX, int pixelY, Scene scene) {
 }
 
 Intersection sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and triangle objects
-    Intersection retval = Intersection(vec3(), vec3(), INFINITY);
+    Intersection retval = Intersection(point(), vec3(), INFINITY);
     vec3 d = pixelRay.direction;
     point p0 = pixelRay.origin;
     point c = curObj.center;
@@ -52,15 +52,18 @@ Intersection sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and 
 }
 Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
     //not 100% sure about
-    Intersection retval = Intersection(vec3(), vec3(), INFINITY);
+    Intersection retval = Intersection(point(), vec3(), INFINITY);
+    vec3 A = curObj.a;
+    vec3 B = curObj.b;
+    vec3 C = curObj.c;
     vec3 CminusA = curObj.c - curObj.a;
     vec3 BminusA = curObj.b - curObj.a;
     vec3 normal = glm::normalize(glm::cross(CminusA, BminusA));
-    float t = (glm::dot(A, normal) - glm::dot(pixelRay.origin, normal)) / glm::dot(ray.direction, normal);
+    float t = (glm::dot(A, normal) - glm::dot(pixelRay.origin, normal)) / glm::dot(pixelRay.direction, normal);
 
     //check if point is behind triangle
     if (t < 0) {
-        return;
+        return retval;
     }
     else {
         vec3 P = pixelRay.origin + t * pixelRay.direction;
@@ -78,12 +81,12 @@ Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
                 if (glm::dot(glm::cross(BminusA, PminusA), normal) >= 0) {
                     inTriangle = true;
                 }
-                else {return;} 
+                else {return retval;} 
             }
-            else {return;} 
+            else {return retval;} 
         }
 
-        else {return;} 
+        else {return retval;} 
 
         if (inTriangle == true) {
             retval.pos = P;
@@ -91,7 +94,7 @@ Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
             retval.dist = t;
             return retval;
         }
-        else {return;}
+        else {return retval;}
 
     }
 }
