@@ -142,13 +142,55 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="FreeImage.dll" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="include\FreeImage.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\common.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\exponential.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\ext.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\fwd.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\geometric.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\glm.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\integer.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat2x2.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat2x3.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat2x4.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat3x2.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat3x3.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat3x4.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat4x2.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat4x3.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\mat4x4.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\matrix.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\packing.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\trigonometric.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\vec2.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\vec3.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\vec4.hpp" />
+    <ClInclude Include="Source\glm-0.9.7.1\glm\vector_relational.hpp" />
+    <ClInclude Include="Source\Image.h" />
+    <ClInclude Include="Source\Intersection.h" />
+    <ClInclude Include="Source\Ray.h" />
+    <ClInclude Include="Source\readfile.h" />
+    <ClInclude Include="Source\Scene.h" />
+    <ClInclude Include="Source\Sphere.h" />
+    <ClInclude Include="Source\Triangle.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Image.cpp" />
+    <ClCompile Include="Source\Intersection.cpp" />
+    <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Ray.cpp" />
+    <ClCompile Include="Source\readfile.cpp" />
+    <ClCompile Include="Source\Scene.cpp" />
+    <ClCompile Include="Source\Sphere.cpp" />
+    <ClCompile Include="Source\Triangle.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\glm-0.9.7.1\glm\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

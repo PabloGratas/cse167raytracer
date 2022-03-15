@@ -1,23 +1,4 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <deque>
-#include <stack>
-#include <OpenGL/gl3.h>
-#include <OpenGL/glext.h>
-#include <GLUT/glut.h>
-#include "glm-0.9.7.1/glm/vec3.hpp"
-#include "glm-0.9.7.1/glm/glm.hpp"
-#include "glm-0.9.7.1/glm/gtc/matrix_transform.hpp"
-
-using namespace std;
 #include "readfile.h"
-#include "Camera.h"
-#include "Scene.h"
-//#include "Transform.h"
-//#include "Triangle.h"
-//#include "Sphere.h"
 
 
 
@@ -35,7 +16,7 @@ bool readvals(stringstream &s, const int numvals, float* values)
   return true; 
 }
 
-vector<Camera> readfile(const char* filename) {
+vector<Camera> readmyfile(const char* filename) {
     Scene theScene(0,0);
     vector<Camera> sceneCams;
     vector<glm::vec3> eyes;
@@ -93,39 +74,39 @@ vector<Camera> readfile(const char* filename) {
                       eyes.push_back(eye);
                       centers.push_back(center);
                       ups.push_back(up);
-                      fovy.push_back(fovy);
+                      fovys.push_back(fovy);
                     }
                 }
                 else if (cmd == "ambient") {
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    *theScene.ambient = vec3(values[0], values[1], values[2]);
+                    theScene.ambient = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "directional"){
                   validinput = readvals(s,6,values);
                   if(validinput){
-                    *theScene.directionala = vec3(values[0], values[1], values[2]);
-                    *theScene.directionalb = vec3(values[0], values[1], values[2]);
+                    theScene.directionala = vec3(values[0], values[1], values[2]);
+                    theScene.directionalb = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "point"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    *theScene.pointa = vec3(values[0], values[1], values[2]);
-                    *theScene.pointb = vec3(values[0], values[1], values[2]);
+                    theScene.pointa = vec3(values[0], values[1], values[2]);
+                    theScene.pointb = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "diffuse"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    *theScene.diffuse = vec3(values[0], values[1], values[2]);
+                    theScene.diffuse = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "specular"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    *theScene.specular = vec3(values[0], values[1], values[2]);
+                    theScene.specular = vec3(values[0], values[1], values[2]);
                   }
                 }
                 else if (cmd == "maxverts"){
@@ -140,13 +121,13 @@ vector<Camera> readfile(const char* filename) {
                 else if (cmd == "tri"){
                   validinput = readvals(s,3,values);
                   if(validinput){
-                    *theScene.triList.push_back(Triangle(vertvec[values[0]], vertVec[values[1]], vertVec[values[2]]));
+                    theScene.triList.push_back(Triangle(vertVec[values[0]], vertVec[values[1]], vertVec[values[2]]));
                   }
                 }
                 else if (cmd == "sphere"){
                   validinput = readvals(s,4,values);
                   if(validinput){
-                    *theScene.sphereList.push_back(Sphere(vec3(values[0], values[1], values[2]), values[3]));
+                    theScene.sphereList.push_back(Sphere(vec3(values[0], values[1], values[2]), values[3]));
                   }
                 }
             }
@@ -154,7 +135,7 @@ vector<Camera> readfile(const char* filename) {
 
     }
   for(int i = 0; i < camcount; i++){
-    sceneCams.push_back(Camera(centers[i], eyes[i], ups[i], fovys[i], *theScene));
+    sceneCams.push_back(Camera(centers[i], eyes[i], ups[i], fovys[i], &theScene));
   }
   return sceneCams;
 }
