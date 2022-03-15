@@ -1,6 +1,6 @@
 
 #include <iostream>
-#include <Camera.h>
+#include "Camera.h"
 #include "FreeImage.h"
 #include "readfile.h"
 #include "Scene.h"

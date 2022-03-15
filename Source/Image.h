@@ -1,3 +1,5 @@
+#ifndef IMG_HEADER
+#define IMG_HEADER
 #include "FreeImage.h"
 #include <vector>
 using namespace std;
@@ -13,3 +15,4 @@ class Image {
 
 
 };
+#endif

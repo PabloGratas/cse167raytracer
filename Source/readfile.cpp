@@ -23,7 +23,7 @@ vector<Camera> readmyfile(const char* filename) {
     vector<glm::vec3> centers;
     vector<glm::vec3> ups;
     vector<float> fovys;
-    int camcount;
+    int camcount = 0;
     string str, cmd;
     ifstream in;
     vector<vec3> vertVec;

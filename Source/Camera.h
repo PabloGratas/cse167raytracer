@@ -1,8 +1,12 @@
+#ifndef CAM_HEADER
+#define CAM_HEADER
 #include "glm-0.9.7.1/glm/vec3.hpp"
 #include "Ray.h"
 #include "Scene.h"
 #include "Intersection.h"
 #include "FreeImage.h"
+#include "Sphere.h"
+#include "Triangle.h"
 typedef glm::vec3 vec3 ; 
 
 class Camera {
@@ -28,3 +32,4 @@ class Camera {
         float fovy = 45.0;
         float fovx;
 };
+#endif

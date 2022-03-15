@@ -1,3 +1,5 @@
+#ifndef SPHERE_HEADER
+#define SPHERE_HEADER
 #include "glm-0.9.7.1/glm/vec3.hpp"
 
 typedef glm::vec3 point;
@@ -15,3 +17,4 @@ class Sphere{
         Sphere(point c, float r);
         ~Sphere();
 };
+#endif

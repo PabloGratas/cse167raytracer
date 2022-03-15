@@ -1,3 +1,5 @@
+#ifndef INTER_HEADER
+#define INTER_HEADER
 #include "glm-0.9.7.1/glm/vec3.hpp"
 #include "Triangle.h"
 #include "Sphere.h"
@@ -15,3 +17,4 @@ class Intersection { //See page 27 of the ray tracing slides
 
 
 };
+#endif

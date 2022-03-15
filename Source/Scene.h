@@ -1,3 +1,5 @@
+#ifndef SCENE_HEADER
+#define SCENE_HEADER
 #include "glm-0.9.7.1/glm/vec3.hpp"
 #include <vector>
 #include "Sphere.h"
@@ -21,3 +23,4 @@ class Scene {
         Scene(int width, int height);
         ~Scene();
 };
+#endif
