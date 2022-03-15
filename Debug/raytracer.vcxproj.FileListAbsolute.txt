@@ -1,1 +1,2 @@
 C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\raytracer\Debug\raytracer.exe
+C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Debug\raytracer.exe
