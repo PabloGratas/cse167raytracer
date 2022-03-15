@@ -35,7 +35,6 @@ vector<Camera> readmyfile(const char* filename) {
 
         getline (in,str);
         while (in) {
-            printf("testing");
             if ((str.find_first_not_of(" \t\r\n") != string::npos) && (str[0] != '#')) {
 
                 stringstream s(str);
@@ -122,6 +121,7 @@ vector<Camera> readmyfile(const char* filename) {
                   validinput = readvals(s,3,values);
                   if(validinput){
                     theScene.triList.push_back(Triangle(vertVec[values[0]], vertVec[values[1]], vertVec[values[2]]));
+                    printf("%d\n", theScene.triList.size());
                   }
                 }
                 else if (cmd == "sphere"){

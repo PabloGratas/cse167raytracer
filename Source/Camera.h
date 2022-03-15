@@ -28,6 +28,8 @@ class Camera {
         vec3 w;
         vec3 u;
         vec3 v;
+        vector<Sphere> sphereList; //list of all our spheres
+        vector<Triangle> triList; //list of all our triangles
         float fovy = 45.0;
         float fovx;
 };

@@ -13,7 +13,7 @@ int main ( int argc, char* argv[] ) {
     const char* filename = argv[1];
     FIBITMAP* bitmap;
     vector<Camera> cams = readmyfile(filename);
-    for(auto itr = cams.begin(); itr < cams.end(); itr++){
+    for(auto itr = cams.begin(); itr != cams.end(); itr++){
         bitmap = itr->bitmapBuild();
         //FOR TEST we will need to 
         if(FreeImage_Save(FIF_PNG, bitmap , "image1.png", 0 )) {

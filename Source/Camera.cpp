@@ -13,6 +13,8 @@ Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene) {
     fovy = glm::radians(fovy);
     fovx = tan(fovy/2) * (thisScene->width/thisScene->height);
     fovx = 2 * atan(fovx);
+    triList = thisScene->triList;
+    sphereList = thisScene->sphereList;
 }
 
 Ray Camera::RayThruPixel(int pixelX, int pixelY) {
@@ -105,7 +107,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
     float minDist = INFINITY;
     float curDist;
     Intersection curInter = Intersection(point(), vec3(), INFINITY);
-    for(auto itr = thisScene->sphereList.begin(); itr < thisScene->sphereList.end(); itr++){
+    for(auto itr = sphereList.begin(); itr != sphereList.end(); itr++){
         curInter = sphereIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
         if(curDist < minDist){
@@ -113,7 +115,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
             retval = curInter;
         }
     }
-    for(auto itr = thisScene->triList.begin(); itr < thisScene->triList.end(); itr++){
+    for(auto itr = triList.begin(); itr != triList.end(); itr++){
         curInter = triangleIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
         if(curDist < minDist){
@@ -126,6 +128,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
 }
 
 FIBITMAP* Camera::bitmapBuild(){
+    printf("%d\n", triList.size());
     FIBITMAP* bitmap = FreeImage_Allocate(thisScene->width, thisScene->height, 24);
     RGBQUAD color;
     if (!bitmap) {
