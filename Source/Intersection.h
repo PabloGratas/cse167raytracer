@@ -11,6 +11,7 @@ class Intersection { //See page 27 of the ray tracing slides
         point pos;
         vec3 surNorm;
         float dist;
+    
         Intersection (glm::vec3 p, glm::vec3 sN, float d);
 
 };

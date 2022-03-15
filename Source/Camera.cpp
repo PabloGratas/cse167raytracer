@@ -19,14 +19,10 @@ Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene) {
 
 Ray Camera::RayThruPixel(int pixelX, int pixelY) {
     //not sure about alpha and beta!!
-    int halfSceneWidth = thisScene->width/2;
-    int halfSceneHeight = thisScene->height/2;
-
-    float pixX = pixelX + 0.5;
-    float pixY = pixelY + 0.5;
-
-    float alpha = tan(fovx/2)*((pixY-halfSceneWidth)/halfSceneWidth)+0.5;
-    float beta = tan(fovy/2)*((halfSceneHeight-pixX)/halfSceneHeight)+0.5;
+    int width = thisScene->width;
+    int height = thisScene->height;
+    float alpha = 2.0*(pixelX+0.5)/width - 1;
+    float beta = 1-2.0*(pixelY+0.5)/width;
     vec3 direction = normalize(alpha*u + beta*v - w);
     return Ray(lookFrom, direction);
 }
@@ -117,7 +113,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
             retval = curInter;
         }
     }
-    for(auto itr = triList.begin(); itr != triList.end(); itr++){
+    /*for(auto itr = triList.begin(); itr != triList.end(); itr++){
         curInter = triangleIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
         if(curDist < 0) continue;
@@ -125,7 +121,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
             minDist = curDist;
             retval = curInter;
         }
-    }
+    }*/
     //Return the Intersect with the shortest distance
     return retval;
 }
