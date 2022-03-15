@@ -38,6 +38,9 @@ void saveScreenshot(string fname, int width, int height) {
 int main ( int argc, char* argv[] ) {
     
     FreeImage_Initialise();
+    
+    cams = readfile()
+    for()
     FIBITMAP* bitmap = FreeImage_Allocate(800, 600, 24);
     RGBQUAD color;
     if (!bitmap) {

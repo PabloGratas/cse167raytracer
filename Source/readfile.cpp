@@ -35,7 +35,8 @@ bool readvals(stringstream &s, const int numvals, float* values)
   return true; 
 }
 
-vector<Camera> readfile(const char* filename, Scene& theScene) {
+vector<Camera> readfile(const char* filename) {
+    Scene theScene(0,0);
     vector<Camera> sceneCams;
     vector<glm::vec3> eyes;
     vector<glm::vec3> centers;
@@ -72,7 +73,9 @@ vector<Camera> readfile(const char* filename, Scene& theScene) {
                         
                         /*ASSIGN to class objects later*/
                         int width = (int)values[0];
-                        int heigh = (int)values[1];
+                        int height = (int)values[1];
+                        theScene.width = width;
+                        theScene.height = height;
                     }
                 }
                 else if (cmd == "camera") {
