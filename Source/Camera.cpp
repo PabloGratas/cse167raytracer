@@ -27,7 +27,7 @@ Ray Camera::RayThruPixel(int pixelX, int pixelY) {
 
     float alpha = tan(fovx/2)*((pixY-halfSceneWidth)/halfSceneWidth)+0.5;
     float beta = tan(fovy/2)*((halfSceneHeight-pixX)/halfSceneHeight)+0.5;
-    vec3 direction = normalize(alpha*u + beta*u - w);
+    vec3 direction = normalize(alpha*u + beta*v - w);
     return Ray(lookFrom, direction);
 }
 
@@ -38,6 +38,7 @@ Intersection Camera::sphereIntersect(Ray* pixelRay, Sphere* curObj){ //We need s
     point c = curObj->center;
     float r = curObj->rad;
     float innersqrt =  dot(d,(p0-c))*dot(d,(p0-c))-length(p0-c)*length(p0-c)+r*r;
+    if(innersqrt <= 0) return retval;
     float tplus = dot(-d,(p0 - c))+sqrt(innersqrt);
     float tminus = dot(-d,(p0 - c))-sqrt(innersqrt);
     if(innersqrt > 0){
@@ -53,6 +54,7 @@ Intersection Camera::sphereIntersect(Ray* pixelRay, Sphere* curObj){ //We need s
     } 
     return retval;
 }
+
 Intersection Camera::triangleIntersect(Ray* pixelRay, Triangle* curObj){
     //not 100% sure about
     Intersection retval = Intersection(point(), vec3(), INFINITY);
@@ -63,9 +65,8 @@ Intersection Camera::triangleIntersect(Ray* pixelRay, Triangle* curObj){
     vec3 BminusA = curObj->b - curObj->a;
     vec3 normal = glm::normalize(glm::cross(CminusA, BminusA));
     float t = (glm::dot(A, normal) - glm::dot(pixelRay->origin, normal)) / glm::dot(pixelRay->direction, normal);
-
     //check if point is behind triangle
-    if (t < 0) {
+    if (t <= 0) {
         return retval;
     }
     else {
@@ -110,6 +111,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
     for(auto itr = sphereList.begin(); itr != sphereList.end(); itr++){
         curInter = sphereIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
+        if(curDist < 0) continue;
         if(curDist < minDist){
             minDist = curDist;
             retval = curInter;
@@ -118,6 +120,7 @@ Intersection Camera::Intersect(Ray* pixelRay){
     for(auto itr = triList.begin(); itr != triList.end(); itr++){
         curInter = triangleIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
+        if(curDist < 0) continue;
         if(curDist < minDist){
             minDist = curDist;
             retval = curInter;
@@ -128,7 +131,6 @@ Intersection Camera::Intersect(Ray* pixelRay){
 }
 
 FIBITMAP* Camera::bitmapBuild(){
-    printf("%d\n", triList.size());
     FIBITMAP* bitmap = FreeImage_Allocate(thisScene->width, thisScene->height, 24);
     RGBQUAD color;
     if (!bitmap) {
@@ -137,18 +139,18 @@ FIBITMAP* Camera::bitmapBuild(){
     for(int x = 0; x < thisScene->width; x++){
         for(int y = 0; y < thisScene->height; y++){
             //Get a ray, plug it into the intersection function. If we get a valid intersect, render red.
-            printf("Pixel (%d, %d)\n", x, y);
+            //printf("Pixel (%d, %d)\n", x, y); //Progress indicator
             Ray cur = RayThruPixel(x, y);
             Intersection curInter = Intersect(&cur);
-            if(curInter.dist == INFINITY){
+            if(curInter.dist == INFINITY || curInter.dist < 0){
                 color.rgbRed = 0;
                 color.rgbBlue = 0;
                 color.rgbGreen = 0;
                 FreeImage_SetPixelColor(bitmap, x, y, &color);
             } else {
-                color.rgbRed = 255.0;
-                color.rgbGreen = 0;
-                color.rgbBlue = 0;
+                color.rgbRed = 0.0;
+                color.rgbGreen = 0.0;
+                color.rgbBlue = 255.0;
                 FreeImage_SetPixelColor(bitmap, x, y, &color);
             }
         }

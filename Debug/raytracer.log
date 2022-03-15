@@ -3,5 +3,7 @@ C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Came
 C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(26,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(28,17): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
 C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(29,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(149,32): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(151,32): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(152,34): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
+C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Source\Camera.cpp(153,33): warning C4244: '=': conversion from 'double' to 'BYTE', possible loss of data
   raytracer.vcxproj -> C:\Users\pegra\OneDrive\Documents\School\CSE 167\HW4\cse167raytracer\Debug\raytracer.exe

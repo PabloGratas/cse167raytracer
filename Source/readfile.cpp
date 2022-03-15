@@ -109,7 +109,6 @@ vector<Camera> readmyfile(const char* filename) {
                   }
                 }
                 else if (cmd == "maxverts"){
-                  printf("lol"); //I don't think we need the maxverts for anything honestly
                 }
                 else if (cmd == "vertex"){
                   validinput = readvals(s,3,values);
@@ -121,7 +120,6 @@ vector<Camera> readmyfile(const char* filename) {
                   validinput = readvals(s,3,values);
                   if(validinput){
                     theScene.triList.push_back(Triangle(vertVec[values[0]], vertVec[values[1]], vertVec[values[2]]));
-                    printf("%d\n", theScene.triList.size());
                   }
                 }
                 else if (cmd == "sphere"){
