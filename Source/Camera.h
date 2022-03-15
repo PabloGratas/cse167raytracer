@@ -2,7 +2,7 @@
 #include "Ray.h"
 #include "Scene.h"
 #include "Intersection.h"
-
+#include "FreeImage.h"
 typedef glm::vec3 vec3 ; 
 
 class Camera {
@@ -10,9 +10,14 @@ class Camera {
     public:
         Camera();
         ~Camera();
-        Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene scene);
+        FIBITMAP* bitmapBuild();
+        Intersection Intersect(Ray pixelRay);
+        Intersection triangleIntersect(Ray pixelRay, Triangle curObj);
+        Intersection sphereIntersect(Ray pixelRay, Sphere curObj);
+        Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene);
         //method to generate rays to each pixel 
-        Ray RayThruPixel(int pixelX, int pixY, Scene scene);
+        Ray RayThruPixel(int pixelX, int pixelY);
+        Scene* thisScene;
         vec3 lookFrom;
         vec3 lookAt;
         vec3 up;

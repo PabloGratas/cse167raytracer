@@ -5,19 +5,20 @@
 #include "Camera.h"
 
 
-Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene scene) {
+Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene) {
     w = glm::normalize(lookFrom-lookAt);
     u = glm::normalize(glm::cross(up, w));
     v = glm::cross(w, u);
     fovy = glm::radians(fovy);
-    fovx = tan(fovy/2) * (scene.width/scene.height);
+    fovx = tan(fovy/2) * (thisScene->width/thisScene->height);
     fovx = 2 * atan(fovx);
+    thisScene = scene;
 }
 
-Ray Camera::RayThruPixel(int pixelX, int pixelY, Scene scene) {
+Ray Camera::RayThruPixel(int pixelX, int pixelY) {
     //not sure about alpha and beta!!
-    int halfSceneWidth = scene.width/2;
-    int halfSceneHeight = scene.height/2;
+    int halfSceneWidth = thisScene->width/2;
+    int halfSceneHeight = thisScene->height/2;
 
     float pixX = pixelX + 0.5;
     float pixY = pixelY + 0.5;
@@ -28,7 +29,7 @@ Ray Camera::RayThruPixel(int pixelX, int pixelY, Scene scene) {
     return Ray(lookFrom, direction);
 }
 
-Intersection sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and triangle objects
+Intersection Camera::sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and triangle objects
     Intersection retval = Intersection(point(), vec3(), INFINITY);
     vec3 d = pixelRay.direction;
     point p0 = pixelRay.origin;
@@ -50,7 +51,7 @@ Intersection sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and 
     } 
     return retval;
 }
-Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
+Intersection Camera::triangleIntersect(Ray pixelRay, Triangle curObj){
     //not 100% sure about
     Intersection retval = Intersection(point(), vec3(), INFINITY);
     vec3 A = curObj.a;
@@ -99,28 +100,55 @@ Intersection triangleIntersect(Ray pixelRay, Triangle curObj){
     }
 }
 
-Intersection Intersect(Ray pixelRay, Scene scene){
-    Intersection retInter;
+Intersection Camera::Intersect(Ray pixelRay){
+    Intersection retval = Intersection(point(), vec3(), INFINITY);
     float minDist = INFINITY;
     float curDist;
     Intersection curInter;
-    for(auto itr = scene.sphereList.begin(); itr < scene.sphereList.end(); itr++){
+    for(auto itr = thisScene->sphereList.begin(); itr < thisScene->sphereList.end(); itr++){
         curInter = sphereIntersect(pixelRay, *itr);
         curDist = curInter.dist;
         if(curDist < minDist){
             minDist = curDist;
-            retInter = curInter;
+            retval = curInter;
         }
     }
-    for(auto itr = scene.triList.begin(); itr < scene.triList.end(); itr++){
+    for(auto itr = thisScene->triList.begin(); itr < thisScene->triList.end(); itr++){
         curInter = triangleIntersect(pixelRay, *itr);
         curDist = curInter.dist;
         if(curDist < minDist){
             minDist = curDist;
-            retInter = curInter;
+            retval = curInter;
         }
     }
     //Return the Intersect with the shortest distance
-    return retInter;
+    return retval;
+}
+
+FIBITMAP* Camera::bitmapBuild(){
+    FIBITMAP* bitmap = FreeImage_Allocate(thisScene->width, thisScene->height, 24);
+    RGBQUAD color;
+    if (!bitmap) {
+        exit (1);
+    }
+    for(int x = 0; x < thisScene->width; x++){
+        for(int y = 0; y < thisScene->height; y++){
+            //Get a ray, plug it into the intersection function. If we get a valid intersect, render red.
+            Ray cur = RayThruPixel(x, y);
+            Intersection curInter = Intersect(cur);
+            if(curInter.dist == INFINITY){
+                color.rgbRed = 0;
+                color.rgbBlue = 0;
+                color.rgbGreen = 0;
+                FreeImage_SetPixelColor(bitmap, x, y, &color);
+            } else {
+                color.rgbRed = 255.0;
+                color.rgbGreen = 0;
+                color.rgbBlue = 0;
+                FreeImage_SetPixelColor(bitmap, x, y, &color);
+            }
+        }
+    }
+    return bitmap;
 }
 
