@@ -20,7 +20,6 @@ class Scene {
         glm::vec3 specular;
         vector<Sphere> sphereList; //list of all our spheres
         vector<Triangle> triList; //list of all our triangles
-        Scene(int width, int height);
-        ~Scene();
+        Scene(int w, int h);
 };
 #endif

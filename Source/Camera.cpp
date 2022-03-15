@@ -29,12 +29,12 @@ Ray Camera::RayThruPixel(int pixelX, int pixelY) {
     return Ray(lookFrom, direction);
 }
 
-Intersection Camera::sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sphere and triangle objects
+Intersection Camera::sphereIntersect(Ray* pixelRay, Sphere* curObj){ //We need sphere and triangle objects
     Intersection retval = Intersection(point(), vec3(), INFINITY);
-    vec3 d = pixelRay.direction;
-    point p0 = pixelRay.origin;
-    point c = curObj.center;
-    float r = curObj.rad;
+    vec3 d = pixelRay->direction;
+    point p0 = pixelRay->origin;
+    point c = curObj->center;
+    float r = curObj->rad;
     float innersqrt =  dot(d,(p0-c))*dot(d,(p0-c))-length(p0-c)*length(p0-c)+r*r;
     float tplus = dot(-d,(p0 - c))+sqrt(innersqrt);
     float tminus = dot(-d,(p0 - c))-sqrt(innersqrt);
@@ -51,30 +51,30 @@ Intersection Camera::sphereIntersect(Ray pixelRay, Sphere curObj){ //We need sph
     } 
     return retval;
 }
-Intersection Camera::triangleIntersect(Ray pixelRay, Triangle curObj){
+Intersection Camera::triangleIntersect(Ray* pixelRay, Triangle* curObj){
     //not 100% sure about
     Intersection retval = Intersection(point(), vec3(), INFINITY);
-    vec3 A = curObj.a;
-    vec3 B = curObj.b;
-    vec3 C = curObj.c;
-    vec3 CminusA = curObj.c - curObj.a;
-    vec3 BminusA = curObj.b - curObj.a;
+    vec3 A = curObj->a;
+    vec3 B = curObj->b;
+    vec3 C = curObj->c;
+    vec3 CminusA = curObj->c - curObj->a;
+    vec3 BminusA = curObj->b - curObj->a;
     vec3 normal = glm::normalize(glm::cross(CminusA, BminusA));
-    float t = (glm::dot(A, normal) - glm::dot(pixelRay.origin, normal)) / glm::dot(pixelRay.direction, normal);
+    float t = (glm::dot(A, normal) - glm::dot(pixelRay->origin, normal)) / glm::dot(pixelRay->direction, normal);
 
     //check if point is behind triangle
     if (t < 0) {
         return retval;
     }
     else {
-        vec3 P = pixelRay.origin + t * pixelRay.direction;
+        vec3 P = pixelRay->origin + t * pixelRay->direction;
         //check if Point is inside the triangle
         
         vec3 PminusA = P - A;
         vec3 PminusB = P - B;
         vec3 PminusC = P - C;
-        vec3 CminusB = curObj.c - curObj.b;
-        vec3 AminusC = curObj.a - curObj.c;
+        vec3 CminusB = curObj->c - curObj->b;
+        vec3 AminusC = curObj->a - curObj->c;
 
         bool inTriangle = false;
         if (glm::dot(glm::cross(BminusA, PminusA), normal) >= 0) {
@@ -100,13 +100,13 @@ Intersection Camera::triangleIntersect(Ray pixelRay, Triangle curObj){
     }
 }
 
-Intersection Camera::Intersect(Ray pixelRay){
+Intersection Camera::Intersect(Ray* pixelRay){
     Intersection retval = Intersection(point(), vec3(), INFINITY);
     float minDist = INFINITY;
     float curDist;
-    Intersection curInter;
+    Intersection curInter = Intersection(point(), vec3(), INFINITY);
     for(auto itr = thisScene->sphereList.begin(); itr < thisScene->sphereList.end(); itr++){
-        curInter = sphereIntersect(pixelRay, *itr);
+        curInter = sphereIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
         if(curDist < minDist){
             minDist = curDist;
@@ -114,7 +114,7 @@ Intersection Camera::Intersect(Ray pixelRay){
         }
     }
     for(auto itr = thisScene->triList.begin(); itr < thisScene->triList.end(); itr++){
-        curInter = triangleIntersect(pixelRay, *itr);
+        curInter = triangleIntersect(pixelRay, &*itr);
         curDist = curInter.dist;
         if(curDist < minDist){
             minDist = curDist;
@@ -127,6 +127,7 @@ Intersection Camera::Intersect(Ray pixelRay){
 
 FIBITMAP* Camera::bitmapBuild(){
     FIBITMAP* bitmap = FreeImage_Allocate(thisScene->width, thisScene->height, 24);
+    
     RGBQUAD color;
     if (!bitmap) {
         exit (1);
@@ -135,7 +136,7 @@ FIBITMAP* Camera::bitmapBuild(){
         for(int y = 0; y < thisScene->height; y++){
             //Get a ray, plug it into the intersection function. If we get a valid intersect, render red.
             Ray cur = RayThruPixel(x, y);
-            Intersection curInter = Intersect(cur);
+            Intersection curInter = Intersect(&cur);
             if(curInter.dist == INFINITY){
                 color.rgbRed = 0;
                 color.rgbBlue = 0;

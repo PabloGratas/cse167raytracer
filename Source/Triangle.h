@@ -16,6 +16,5 @@ class Triangle{
         glm::vec3 diffuse;
         glm::vec3 specular;
         Triangle(point ap, point bp, point cp);
-        ~Triangle();
 };
 #endif

@@ -10,6 +10,5 @@ class Ray {
         point origin;
         vec3 direction; 
         Ray(point origin, vec3 direction);
-        ~Ray();
 };
 #endif

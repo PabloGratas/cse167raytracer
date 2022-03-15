@@ -1,7 +1,7 @@
 #include "Intersection.h"
 
-Intersection::Intersection(glm::vec3 pos, glm::vec3 surNorm, float dist) :
-    pos(pos),
-    surNorm(surNorm),
-    dist(dist)
-{}
+Intersection::Intersection(glm::vec3 p, glm::vec3 sN, float d){
+    p = pos;
+    sN = surNorm;
+    d = dist;
+}

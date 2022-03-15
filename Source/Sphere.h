@@ -15,6 +15,5 @@ class Sphere{
         glm::vec3 diffuse;
         glm::vec3 specular;
         Sphere(point c, float r);
-        ~Sphere();
 };
 #endif

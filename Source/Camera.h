@@ -13,11 +13,10 @@ class Camera {
     
     public:
         Camera();
-        ~Camera();
         FIBITMAP* bitmapBuild();
-        Intersection Intersect(Ray pixelRay);
-        Intersection triangleIntersect(Ray pixelRay, Triangle curObj);
-        Intersection sphereIntersect(Ray pixelRay, Sphere curObj);
+        Intersection Intersect(Ray* pixelRay);
+        Intersection triangleIntersect(Ray* pixelRay, Triangle* curObj);
+        Intersection sphereIntersect(Ray* pixelRay, Sphere* curObj);
         Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene);
         //method to generate rays to each pixel 
         Ray RayThruPixel(int pixelX, int pixelY);
