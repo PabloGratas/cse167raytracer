@@ -9,10 +9,10 @@ Camera::Camera(vec3 lookFrom, vec3 lookAt, vec3 up, float fovy, Scene* scene) {
     w = glm::normalize(lookFrom-lookAt);
     u = glm::normalize(glm::cross(up, w));
     v = glm::cross(w, u);
+    thisScene = scene;
     fovy = glm::radians(fovy);
     fovx = tan(fovy/2) * (thisScene->width/thisScene->height);
     fovx = 2 * atan(fovx);
-    thisScene = scene;
 }
 
 Ray Camera::RayThruPixel(int pixelX, int pixelY) {
@@ -127,7 +127,6 @@ Intersection Camera::Intersect(Ray* pixelRay){
 
 FIBITMAP* Camera::bitmapBuild(){
     FIBITMAP* bitmap = FreeImage_Allocate(thisScene->width, thisScene->height, 24);
-    
     RGBQUAD color;
     if (!bitmap) {
         exit (1);
@@ -135,6 +134,7 @@ FIBITMAP* Camera::bitmapBuild(){
     for(int x = 0; x < thisScene->width; x++){
         for(int y = 0; y < thisScene->height; y++){
             //Get a ray, plug it into the intersection function. If we get a valid intersect, render red.
+            printf("Pixel (%d, %d)\n", x, y);
             Ray cur = RayThruPixel(x, y);
             Intersection curInter = Intersect(&cur);
             if(curInter.dist == INFINITY){

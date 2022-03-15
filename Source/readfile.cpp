@@ -29,13 +29,13 @@ vector<Camera> readmyfile(const char* filename) {
     vector<vec3> vertVec;
     in.open(filename);
     if (in.is_open()) {
-        
         //transformation stack
         std::stack <glm::mat4> transfstack;
         transfstack.push(glm::mat4(1.0));
 
         getline (in,str);
         while (in) {
+            printf("testing");
             if ((str.find_first_not_of(" \t\r\n") != string::npos) && (str[0] != '#')) {
 
                 stringstream s(str);
@@ -130,7 +130,11 @@ vector<Camera> readmyfile(const char* filename) {
                     theScene.sphereList.push_back(Sphere(vec3(values[0], values[1], values[2]), values[3]));
                   }
                 }
+                else {
+                  continue;
+                }
             }
+            getline (in,str);
         }
 
     }
