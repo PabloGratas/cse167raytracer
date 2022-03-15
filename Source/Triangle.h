@@ -13,6 +13,6 @@ class Triangle{
         glm::vec3 pointb;
         glm::vec3 diffuse;
         glm::vec3 specular;
-        Triangle(point a, point b, point c);
+        Triangle(point ap, point bp, point cp);
         ~Triangle();
 };
